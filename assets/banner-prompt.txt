@@ -1,0 +1,9 @@
+Generated with the built-in image generation tool. The attached user image was used as a visual reference.
+
+Use case: stylized-concept.
+Asset type: animation sprite sheet for a GitHub README GIF.
+Input image: the attached image is a STYLE AND MOOD reference only, not an edit target.
+Create a precise 2 by 2 grid of FOUR animation frames, equal-sized rectangular panels, with NO gutters, NO panel borders, NO margins. Overall sheet 1536x1024, each panel 768x512. Reading order is animation order.
+Each panel must show exactly the SAME locked-camera wide pixel-art scene inspired by 1980s Ghostbusters arcade games: New York at night, dark navy starry sky, brick firehouse at left with no-ghost sign, a detailed white Ecto-1 with red fins parked across the lower middle, blue roof beacons, neon green Slimer floating on the right, a glowing ghost trap at bottom right. Crisp hand-crafted pixel art with chunky clean pixels, rich shading, limited midnight blue / warm cream / red / ectoplasm green palette, like the provided reference.
+In EVERY panel the exact SAME large cream pixel typography with deep red shadow at upper center reads "VISIONFLOW". Below, smaller clean pixel text reads "SEU OLHAR NO CONTROLE". Above the title small text reads "LUCAS ROSADA". All words perfectly legible and identical across frames. Do not copy the reference text.
+Animation differences ONLY: frame 1 Slimer at baseline and roof beacon left lit; frame 2 Slimer slightly up and right beacon lit; frame 3 Slimer slightly higher with left beacon lit; frame 4 Slimer slightly down and right beacon lit. Green trap glow pulses and a few stars twinkle across frames. Buildings, lettering, car, composition and all other pixels must stay aligned. Each panel is a complete finished banner with exactly matching layout. No watermarks, no explanatory labels.
