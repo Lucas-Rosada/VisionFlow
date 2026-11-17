@@ -1,5 +1,5 @@
 
-![Banner animado do VisionFlow em pixel art: cidade à noite, Ecto-1 e um fantasma verde.](assets/visionflow.gif)
+# VisionFlow
 
 <p align="center"><strong>Seu olhar no controle.</strong><br>Controle o cursor do PC com os olhos e uma webcam.</p>
 
