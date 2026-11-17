@@ -25,9 +25,7 @@ O controle é **direcional**: olhar para a direita move o cursor para a direita;
 - Atalhos globais no Windows para ativar, pausar, recalibrar e sair.
 - Processamento local: o programa não grava nem envia imagens da webcam.
 
-**Cliques por gesto:** feche somente o olho esquerdo por cerca de meio segundo e reabra para um clique esquerdo; use o olho direito para um clique direito. Esquerdo e direito se referem aos seus próprios olhos.
-
-O cursor fica parado durante o gesto. O clique acontece ao reabrir o olho, uma única vez, com intervalo de 0,7 segundo entre gestos. Piscadas curtas, os dois olhos fechados e fechamentos acima de 1,5 segundo são ignorados. Pausar, perder a detecção ou interromper os quadros cancela o gesto pendente. Os cliques só funcionam depois da calibração e com o controle ativado por F8.
+**Cliques por gesto ainda não estão implementados.** Use o mouse físico para clicar.
 
 ## Instalação
 
@@ -46,7 +44,7 @@ O modelo oficial do MediaPipe é salvo em `models/face_landmarker.task`. Depois 
 ## Como usar
 
 1. Sente-se de frente para a webcam, com o rosto iluminado e ambos os olhos visíveis.
-2. Olhe para o **centro do monitor**, pressione **Espaço** e mantenha o olhar por três segundos, com ambos os olhos abertos. A calibração registra também a abertura natural dos olhos para os cliques.
+2. Olhe para o **centro do monitor**, pressione **Espaço** e mantenha o olhar por três segundos.
 3. Pressione **F8** para ativar o controle. Ele começa pausado após a calibração.
 4. Olhe para os lados, para cima ou para baixo para mover o cursor. Volte ao centro para parar.
 5. Se mudar de postura, use **F9** e registre novamente o centro.
@@ -110,12 +108,6 @@ Para verificar a sintaxe:
 ```
 
 Essa verificação não avalia a precisão do rastreamento. O comportamento real precisa ser conferido com a webcam e a calibração de quem vai usar o aplicativo.
-
-Para executar os testes dos gestos de clique, sem acionar o mouse nem a webcam:
-
-```powershell
-.\.venv\Scripts\python.exe -m unittest -v
-```
 
 ## Autor
 

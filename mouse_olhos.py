@@ -10,7 +10,7 @@ import mediapipe as mp
 import numpy as np
 import pyautogui
 
-from gaze import EyeController, WinkController, eye_openness, eye_position
+from gaze import EyeController, eye_position
 
 MODEL = Path(__file__).resolve().parent / 'models' / 'face_landmarker.task'
 MODEL_URL = ('https://storage.googleapis.com/mediapipe-models/'
@@ -97,12 +97,9 @@ def run(camera, sensitivity=1.0):
         cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
         keys = Keys()
         controller = EyeController(sensitivity)
-        clicks = WinkController()
         paused = True
         capture_start = None
         collected = []
-        collected_open = []
-        click_message, click_message_until = '', 0
         remainder = np.zeros(2)
         message = 'Olhe ao centro do monitor e pressione ESPACO para calibrar.'
         last_time, timestamp = time.monotonic(), -1
@@ -116,8 +113,6 @@ def run(camera, sensitivity=1.0):
                     break
                 if 'calibrate' in events or ('sample' in events and controller.center is None):
                     paused, capture_start, collected = True, time.monotonic(), []
-                    collected_open = []
-                    clicks.reset()
                     controller.filtered = None
                 if 'pause' in events and controller.center is not None and capture_start is None:
                     paused = not paused
@@ -134,36 +129,24 @@ def run(camera, sensitivity=1.0):
                 timestamp = max(timestamp + 1, int(now * 1000))
                 result = detector.detect_for_video(mp.Image(image_format=mp.ImageFormat.SRGB,
                                                            data=rgb), timestamp)
-                gaze, eye_zoom, openness = None, None, None
+                gaze, eye_zoom = None, None
                 if result.face_landmarks:
                     landmarks = result.face_landmarks[0]
                     gaze = eye_position(landmarks, frame.shape[1], frame.shape[0])
-                    openness = eye_openness(landmarks, frame.shape[1], frame.shape[0])
                     eye_zoom = draw_eyes(frame, landmarks)
                 if capture_start is not None:
                     message = 'Calibrando: olhe ao centro do monitor por 3 segundos.'
-                    if now - capture_start >= 0.8 and gaze is not None and openness is not None:
+                    if now - capture_start >= 0.8 and gaze is not None:
                         collected.append(gaze)
-                        collected_open.append(openness)
                     if now - capture_start >= 3:
                         capture_start = None
                         try:
-                            calibrated_controller = EyeController(sensitivity)
-                            calibrated_clicks = WinkController()
-                            calibrated_controller.calibrate(collected)
-                            calibrated_clicks.calibrate(collected_open)
-                            controller, clicks = calibrated_controller, calibrated_clicks
+                            controller.calibrate(collected)
                             message = 'Centro salvo. F8 ativa. Olhar ao centro para o cursor.'
                         except ValueError as exc:
                             message = str(exc) + ' F9: repetir.'
-                button = clicks.update(openness, now, enabled=not paused and capture_start is None)
-                if button is not None:
-                    pyautogui.click(button=button)
-                    click_message = 'CLIQUE ESQUERDO' if button == 'left' else 'CLIQUE DIREITO'
-                    click_message_until = now + 1.2
-                can_move = not paused and gaze is not None and not clicks.frozen
-                velocity = controller.velocity(gaze if can_move else None, dt)
-                if can_move:
+                velocity = controller.velocity(gaze if not paused else None, dt)
+                if not paused and gaze is not None:
                     step = velocity * dt + remainder
                     pixels = np.trunc(step)
                     remainder = step - pixels
@@ -181,15 +164,6 @@ def run(camera, sensitivity=1.0):
                 label(canvas, status, color=(0, 220, 255))
                 label(canvas, message, 1)
                 label(canvas, 'F8: pausar | F9: calibrar centro | ESC: sair', 2)
-                if clicks.candidate is not None:
-                    click_status = 'Segure 0.5s e reabra: ' + ('clique esquerdo' if clicks.candidate == 'left' else 'clique direito')
-                elif now < click_message_until:
-                    click_status = click_message
-                else:
-                    click_status = 'Piscar 1 olho por 0.5s: esquerdo = clique E | direito = clique D'
-                cv2.rectangle(canvas, (0, 420), (800, 450), (20, 20, 20), -1)
-                cv2.putText(canvas, click_status, (15, 442), cv2.FONT_HERSHEY_SIMPLEX,
-                            0.53, (0, 255, 255), 1, cv2.LINE_AA)
                 if eye_zoom is not None:
                     canvas[480:580, 20:380] = eye_zoom
                 cv2.putText(canvas, 'IRIS: pontos amarelos', (20, 470),
