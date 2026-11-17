@@ -1,4 +1,3 @@
-# VisionFlow
 
 ![Banner animado do VisionFlow em pixel art: cidade à noite, Ecto-1 e um fantasma verde.](assets/visionflow.gif)
 
